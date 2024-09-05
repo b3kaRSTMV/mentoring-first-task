@@ -1,9 +1,8 @@
 
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { UserApiService} from './hero.service';
-import { Userlist } from './user-list.componetns';
-import { __values } from 'tslib';
+import { UserApiService} from '../services/usersApi.service';
+import { Userlist } from './user-list.component';
 import { CommonModule } from '@angular/common';
 
 
@@ -11,7 +10,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, Userlist,CommonModule],
+  imports: [RouterOutlet, Userlist,CommonModule,],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
   
@@ -23,11 +22,6 @@ users: any = []
 
 
  constructor() {
-  this.userApiService.getUsers()
-  .subscribe(value => {
-this.users = value
-  })
-
+  this.userApiService.getUsers().subscribe(value => {this.users = value})
  }
-
 }
