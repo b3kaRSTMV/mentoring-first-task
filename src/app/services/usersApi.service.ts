@@ -6,9 +6,13 @@ import { inject, Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class UserApiService {
-
   api: HttpClient = inject(HttpClient) 
+  users = []
   getUsers(){ 
-    return this.api.get("https://jsonplaceholder.typicode.com/users")
+    return this.api.get("https://jsonplaceholder.typicode.com/users").subscribe(
+      (response: any) => {
+        this.users = response
+      }
+    )
   }
 }
