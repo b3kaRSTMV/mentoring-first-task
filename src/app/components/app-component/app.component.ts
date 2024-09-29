@@ -15,11 +15,7 @@ import { UserList } from '../user-list-component/user-list.component';
 })
 export class AppComponent {
 
-//userApiService:UserApiService = inject(UserApiService)
-//users: any = []
-
-
  constructor() {
-  //this.userApiService.getUsers().subscribe(value => {this.users = value})
+
  }
 }

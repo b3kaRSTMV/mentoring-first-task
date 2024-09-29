@@ -1,0 +1,7 @@
+<div class="div" style="display: flex; flex-wrap: wrap;">
+    <div *ngFor="let user of usersService.users$| async" style="border: 1px solid black; margin: 10px; padding: 10px; width: 200px; text-align: center;">
+        <app-user-card [user]="user" (deleteUser)="onDeleteUsers($event)" ></app-user-card>
+    </div>
+</div>
+<router-outlet></router-outlet>
+ <!-- // пайпы позволяют доставать из rx js данные в нашем случае это пайп async позволяет доставть юзеров из usersSubject // -->

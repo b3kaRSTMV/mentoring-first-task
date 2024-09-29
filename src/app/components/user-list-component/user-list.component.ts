@@ -1,41 +1,33 @@
 import { RouterOutlet } from '@angular/router';
-import { Component, inject, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject, OnInit } from "@angular/core";
 import { UserCard } from '../user-card-component/user-card.component';
-import { HttpClient } from '@angular/common/http';
-import { NgFor } from '@angular/common';
-
+import { AsyncPipe, NgFor } from '@angular/common';
+import { UsersService } from '../../services/users.service';
 
 
 
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [RouterOutlet,UserCard,NgFor],
-    templateUrl: './userList.component.html',
-    styleUrl: './user-list-component.scss'
+    imports: [RouterOutlet,UserCard,NgFor, AsyncPipe],
+    templateUrl: './user-list.component.html',
+    styleUrl: './user-list-component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 
-export class UserList {
-    readonly api = inject(HttpClient)
-    users: any = []
-    constructor(){
-        this.api.get('https://jsonplaceholder.typicode.com/users').subscribe(
-            (response: any) => {
-                this.users = response
-                console.log(this.users)
-            }
-        )
-    }
-deleteUser(id :number){
-    // @ts-ignore
-    this.users = this.users.filter(value =>{
-        if (id === value.id) {
-            return false;
-        } else {
-            return true;
-        }
-       } 
-    )
-} 
-    }
+export class UserList implements OnInit {
+    public readonly usersService = inject(UsersService)
+
+ngOnInit(): void {
+    this.usersService.loadUsers()      
+}
+
+onDeleteUsers(id: number) {
+this.usersService.deleteUser(id)
+}
+}
+
+
+
 

@@ -1,0 +1,8 @@
+<div class="user-card">
+    <p>{{user.name}}</p>
+    <p>{{user.email}}</p>
+    <p>{{user.address.city}}</p>
+    <p>{{user.address.street}}</p>
+    <button style="width: 100px;" (click)="onDeleteUser(user.id)">Удалить пользователя</button> 
+    <button style="width: 100px;">Добавить пользователя</button>
+</div>
