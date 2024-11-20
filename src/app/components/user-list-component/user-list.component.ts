@@ -5,11 +5,10 @@ import { AsyncPipe, NgFor } from '@angular/common';
 import { UsersService } from '../../services/users.service';
 
 
-
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [RouterOutlet,UserCard,NgFor, AsyncPipe],
+    imports: [RouterOutlet,UserCard,NgFor,AsyncPipe],
     templateUrl: './user-list.component.html',
     styleUrl: './user-list-component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush
