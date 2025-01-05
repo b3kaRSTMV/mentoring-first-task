@@ -1,0 +1,15 @@
+.create-form {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    align-items: center;
+    border: solid 1px;
+    padding: 10px;
+    .edit-btn{
+        width: 210px;
+        margin-top:20px;
+    }
+}
+.form-input{
+    width: 200px;
+}
