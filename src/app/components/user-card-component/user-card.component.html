@@ -4,6 +4,5 @@
   <p>{{ user.website }}</p>
   <p>{{ user.company.name }}</p>
   <button class="card-btn" (click)="onDeleteUser(user.id)">Удалить пользователя</button>
-  <button class="card-btn">Добавить пользователя</button>
-  <button class="card-btn">Редактировать пользователя</button>
+  <button class="card-btn" (click)="openDialog()">Редактировать пользователя</button>
 </div>

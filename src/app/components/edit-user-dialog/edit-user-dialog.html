@@ -1,0 +1,11 @@
+<form class="create-form" style="display: flex; flex-direction: column; padding: 50px; margin: 50px;" [formGroup]="form">
+    <p>Name:</p>
+    <input class="form-input" type="text" formControlName="name">
+    <p>Email:</p>
+    <input class="form-input" type="text" formControlName="email">
+    <p>Website:</p>
+    <input class="form-input" type="text" formControlName="website">
+    <p>Company name:</p>
+    <input class="form-input" type="text" formControlName="companyName">
+    <button [disabled]="form.invalid" class="edit-btn" [mat-dialog-close]="userWithUpdatedFields">Редактировать</button> // когда кликнем форма закроется и в нее передадутся данные из геттера 
+</form>

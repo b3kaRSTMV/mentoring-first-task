@@ -1,9 +1,14 @@
-
-import {ChangeDetectionStrategy,Component,inject,OnInit,} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+} from '@angular/core';
 import { UserCard } from '../user-card-component/user-card.component';
 import { AsyncPipe, NgFor } from '@angular/common';
 import { UsersService } from '../../services/users.service';
 import { CreateUserFormComponent } from '../create-user-form/create-user-form.component';
+import { UsersApiService } from '../../services/usersApi.service';
 
 export interface User {
   id: number;
@@ -16,49 +21,52 @@ export interface User {
     city: string;
     zipcode: string;
     geo: {
-      lat:string;
-      lng:string;
+      lat: string;
+      lng: string;
     };
   };
   phone?: string;
   website: string;
-  company:{
+  company: {
     name: string;
     catchPhrase?: string;
-    bs?:string;
-  }
+    bs?: string;
+  };
+};
 
-
-}
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [UserCard, NgFor, AsyncPipe,CreateUserFormComponent],
+  imports: [UserCard, NgFor, AsyncPipe, CreateUserFormComponent],
   templateUrl: './user-list.component.html',
   styleUrl: './user-list-component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
-
-export class UserList implements OnInit {
-
-
+export class UserList {
+  public readonly usersApiService = inject(UsersApiService);
   public readonly usersService = inject(UsersService); // даем доступ в этот компонент данные из UsersService
-constructor(){
-  this.usersService.users$.subscribe(
-    users => console.log(users)
-  )
-}
 
-  ngOnInit(): void {
-    this.usersService.loadUsers();
-  }
+  constructor() {
+    this.usersApiService.getUsers().subscribe((response: any) => {
+      this.usersService.loadUsers(response);
+    });
+    this.usersService.users$.subscribe((users) => {console.log(users)})
+  } // Загрузка данных юзеров
 
   onDeleteUsers(id: number) {
     this.usersService.deleteUser(id);
   }
 
-  createUser(formData: any ) {
+  editUser(user: any) {
+    this.usersService.editUser({
+      ...user,
+      company: {
+        name: user.companyName,
+      }
+    });
+  }
+
+  createUser(formData: any) {
     this.usersService.addUser({
       id: new Date().getTime(),
       name: formData.name,
@@ -69,4 +77,5 @@ constructor(){
       },
     });
   }
+
 }

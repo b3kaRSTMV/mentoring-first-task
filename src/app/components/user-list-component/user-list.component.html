@@ -1,9 +1,8 @@
 <app-create-user-form (createUser)="createUser($event)"></app-create-user-form>
 <div class="user-list">
   <div *ngFor="let users of usersService.users$ | async">
-    <app-user-card [user]="users" (deleteUser)="onDeleteUsers($event)"></app-user-card>
-  </div>                     
+    <app-user-card [user]="users" (deleteUser)="onDeleteUsers($event)" (editUser)="editUser($event)"></app-user-card>
+  </div>                    
 </div>
-
 
 <!-- // пайпы позволяют доставать из rx js данные в нашем случае это пайп async позволяет доставть юзеров из usersSubject // -->

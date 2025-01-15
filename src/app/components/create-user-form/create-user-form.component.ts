@@ -31,7 +31,6 @@ export class CreateUserFormComponent{
     this.form.valueChanges.subscribe(
         formValue => console.log(formValue)
     )
-   } 
- 
+   } // подписка на каждое изменение инпута!
 }
 
