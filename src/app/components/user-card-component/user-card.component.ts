@@ -25,17 +25,22 @@ export class UserCard {
 
   readonly dialog = inject(MatDialog);
 
-  openDialog(): void {
-    const dialogRef = this.dialog.open(EditUserDialogComponent, {
-      data: { user: this.user }, //  метод из matdialog мы просто подставляем свои данные
-    });
+  // openDialog(): void {
+  //   const dialogRef = this.dialog.open(EditUserDialogComponent, {
+  //     data: { user: this.user }, //  метод из matdialog мы просто подставляем свои данные
+  //   });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (!result) return;
-      this.editUser.emit(result);
-    }); //после закрытия отлавливаем данные с помощью подписки и емитим(отправляем наружу)
+  //   dialogRef.afterClosed().subscribe((result) => {
+  //     if (!result) return;
+  //     this.editUser.emit(result);
+  //   }); //после закрытия отлавливаем данные с помощью подписки и емитим(отправляем наружу)
+  // }
+
+  onEditUser(user: User){
+    this.editUser.emit(this.user)
   }
+
   onDeleteUser(userId: number): void {
     this.deleteUser.emit(userId);
   } // создали метод который принимает в себя айди который мы получили при нажатии в user-card шаблоне и обращается к функции в удаления в users-service и применяет эту функцию
-}
+}// опен дайлог повесить на едит юзер в юзер лист хтмл и в 

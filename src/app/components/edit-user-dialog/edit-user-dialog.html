@@ -5,7 +5,9 @@
     <input class="form-input" type="text" formControlName="email">
     <p>Website:</p>
     <input class="form-input" type="text" formControlName="website">
-    <p>Company name:</p>
-    <input class="form-input" type="text" formControlName="companyName">
-    <button [disabled]="form.invalid" class="edit-btn" [mat-dialog-close]="userWithUpdatedFields">Редактировать</button> // когда кликнем форма закроется и в нее передадутся данные из геттера 
+    <div formGroupName="company">
+        <p>Company name:</p>
+        <input class="form-input" type="text" formControlName="name">
+    </div>
+    <button [disabled]="form.invalid" class="edit-btn" (click)="onSubmit()" >Редактировать</button> 
 </form>
