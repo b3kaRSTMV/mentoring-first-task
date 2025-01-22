@@ -10,10 +10,9 @@ import {
 import { UserCard } from '../user-card-component/user-card.component';
 import { AsyncPipe, NgFor } from '@angular/common';
 import { UsersService } from '../../services/users.service';
-import { CreateUserFormComponent } from '../create-user-form/create-user-form.component';
 import { UsersApiService } from '../../services/usersApi.service';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { EditUserDialogComponent } from '../edit-user-dialog/edit-user-dialog.component';
+import { CreateEditUserDialogComponent} from '../edit-user-dialog/create-edit-user-component';
 
 export interface User {
   id: number;
@@ -52,7 +51,7 @@ export interface CreateUser {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [UserCard, NgFor, AsyncPipe, CreateUserFormComponent],
+  imports: [UserCard, NgFor, AsyncPipe,],
   templateUrl: './user-list.component.html',
   styleUrl: './user-list-component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -97,20 +96,20 @@ export class UserList {
 
  
   readonly dialog = inject(MatDialog);
-  openDialog(user?: User): void { // либо undf либо обьект типа User! если в параметре указан вопросительный знак то это значит что он необьязателен!
-    let isEdit: boolean = false; // если пришел юзер делаем тру если нет то андеф и фолс создаем переменную которая хранит булеан значение
+  openDialog(user?: User): void { // при открытии диалога будет либо undf либо обьект типа User! если в параметре указан вопросительный знак то это значит что он необьязателен!
+    let isEdit: boolean = false; // если пришел юзер делаем true если нет то undefined и фолс создаем переменную которая хранит булеан значение
     if (user){
       isEdit = true
     }
-    const dialogRef = this.dialog.open(EditUserDialogComponent, {
+    const dialogRef = this.dialog.open(CreateEditUserDialogComponent, {
       data: { user: user , isEdit},
     });
 
     dialogRef.afterClosed().subscribe((result: CreateUser | User) => {
-      console.log('1, МОДАЛКА ЗАКРЫЛАСЬ, ЗНАЧЕНИЕ ФОРМЫ: ', result);
+      console.log('МОДАЛКА ЗАКРЫЛАСЬ, ЗНАЧЕНИЕ ФОРМЫ:', result);
       if (result) {
-         isEdit ? this.editUser(result) : this.createUser(result); // если isedit true я его редак если фолсе то создаю 
+         isEdit ? this.editUser(result) : this.createUser(result); // если isEdit true я его редак если false то создаю 
       }
     });
   }
-} // 
+}

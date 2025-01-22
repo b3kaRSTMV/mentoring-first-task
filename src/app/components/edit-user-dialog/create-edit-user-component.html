@@ -9,5 +9,6 @@
         <p>Company name:</p>
         <input class="form-input" type="text" formControlName="name">
     </div>
-    <button [disabled]="form.invalid" class="edit-btn" (click)="onSubmit()" >Редактировать</button> 
+    <button [disabled]="form.invalid" class="edit-btn" (click)="onSubmit()" mat-button>{{ data.isEdit ? 'Редактировать пользователя' : 'Добавить пользователя' }}</button>
+
 </form>
