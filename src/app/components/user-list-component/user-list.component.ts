@@ -59,15 +59,26 @@ export interface CreateUser {
 export class UserList {
   public readonly usersApiService = inject(UsersApiService);
   public readonly usersService = inject(UsersService); // даем доступ в этот компонент данные из UsersService
+  users: User[] = [];  // Список пользователей
+  // constructor() {
+  //   this.usersApiService.getUsers().subscribe((response: any) => {
+  //     this.usersService.loadUsers(response);
+  //   });
+  // } // Загрузка данных юзеров
 
-  constructor() {
-    this.usersApiService.getUsers().subscribe((response: any) => {
-      this.usersService.loadUsers(response);
-    });
+
+
+
+  
+  ngOnInit(): void {
+    // Инициализируем пользователей при загрузке компонента
+    this.usersService.initializeUsers();
     this.usersService.users$.subscribe((users) => {
-      console.log(users);
+      this.users = users;  // Обновляем список пользователей
     });
-  } // Загрузка данных юзеров
+  }
+
+  
 
   onDeleteUsers(id: number) {
     this.usersService.deleteUser(id);
