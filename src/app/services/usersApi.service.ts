@@ -1,18 +1,13 @@
-import { HttpClient } from '@angular/common/http'; // подключаем технологию которая делает запрос на бекенд.
-import { inject, Injectable } from '@angular/core'; 
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
 import { User } from '../components/user-list-component/user-list.component';
 import { Observable } from 'rxjs';
 
-@Injectable({providedIn: 'root',}) // Декоратор этот класс можно достать из другого класса с помощью inject
-
+@Injectable({ providedIn: 'root' })
 export class UsersApiService {
-  api = inject(HttpClient); //инжектируем клиент http для запроса на бекенд
+  api = inject(HttpClient);
 
-  getUsers():Observable<User[]>{
-    return this.api.get<User[]>('https://jsonplaceholder.typicode.com/users'); // метод который делает запрос на бекенд //.this - обращение к полю класса //get - получить
+  getUsers(): Observable<User[]> {
+    return this.api.get<User[]>('https://jsonplaceholder.typicode.com/users');
   }
-
 }
-
-
-

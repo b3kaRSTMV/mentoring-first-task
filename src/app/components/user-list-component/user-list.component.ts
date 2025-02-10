@@ -1,22 +1,12 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  inject,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { UserCard } from '../user-card-component/user-card.component';
 import { AsyncPipe, NgFor } from '@angular/common';
-// import { UsersService } from '../../services/users.service';
 import { UsersApiService } from '../../services/usersApi.service';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { CreateEditUserDialogComponent} from '../edit-user-dialog/create-edit-user-component';
+import { MatDialog } from '@angular/material/dialog';
+import { CreateEditUserDialogComponent } from '../edit-user-dialog/create-edit-user-component';
 import { Store } from '@ngrx/store';
 import { UsersActions } from './Store/user.actions';
 import { selectUsers } from './Store/users.selector';
-import { Action } from 'rxjs/internal/scheduler/Action';
 
 export interface User {
   id: number;
@@ -48,73 +38,38 @@ export interface CreateUser {
   website: string;
   company: {
     name: string;
-  }
+  };
 }
-// сделать отдельную папку для интерфейсов
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [UserCard, NgFor, AsyncPipe,],
+  imports: [UserCard, NgFor, AsyncPipe],
   templateUrl: './user-list.component.html',
   styleUrl: './user-list-component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserList {
   public readonly usersApiService = inject(UsersApiService);
-  // public readonly usersService = inject(UsersService); // даем доступ в этот компонент данные из UsersService
   private readonly store = inject(Store);
   public readonly users$ = this.store.select(selectUsers);
-  // users: User[] = [];  // Список пользователей
-  // constructor() {
-  //   this.usersApiService.getUsers().subscribe((response: any) => {
-  //     this.usersService.loadUsers(response);
-  //   });
-  // } // Загрузка данных юзеров
 
-
-
-
-  
   ngOnInit(): void {
-    // Инициализируем пользователей при загрузке компонента
-    // this.usersService.initializeUsers();
-    // this.usersService.users$.subscribe((users) => {
-    //   this.users = users;  // Обновляем список пользователей
-    // });
     this.usersApiService.getUsers().subscribe((response: User[]) => {
-      this.store.dispatch(UsersActions.set({users: response}));
+      this.store.dispatch(UsersActions.set({ users: response }));
       localStorage.setItem('users', JSON.stringify(response)); // сохраняем в local storage
-    })  
+    });
   }
 
-  
-
   onDeleteUsers(id: number) {
-    // this.usersService.deleteUser(id);
-    this.store.dispatch(UsersActions.delete({id}));
+    this.store.dispatch(UsersActions.delete({ id }));
   }
 
   editUser(user: CreateUser) {
-    // this.usersService.editUser({
-    //   ...user,
-    //   company: {
-    //     name: user.company.name,
-    //   },
-    // });
-    this.store.dispatch(UsersActions.edit({user}));
+    this.store.dispatch(UsersActions.edit({ user }));
   }
 
   createUser(formData: CreateUser) {
-    // this.usersService.addUser({
-    //   id: new Date().getTime(),
-    //   name: formData.name,
-    //   email: formData.email,
-    //   website: formData.website,
-    //   company: {
-    //     name: formData.company.name,
-    //   },
-    // });
     this.store.dispatch(
       UsersActions.create({
         user: {
@@ -123,28 +78,26 @@ export class UserList {
           email: formData.email,
           website: formData.website,
           company: {
-          name: formData.company.name,
-      },
-        }
+            name: formData.company.name,
+          },
+        },
       })
-    )
+    );
   }
 
- 
   readonly dialog = inject(MatDialog);
-  openDialog(user?: User): void { // при открытии диалога будет либо undf либо обьект типа User! если в параметре указан вопросительный знак то это значит что он необьязателен!
-    let isEdit: boolean = false; // если пришел юзер делаем true если нет то undefined и фолс создаем переменную которая хранит булеан значение
-    if (user){
-      isEdit = true
+  openDialog(user?: User): void {
+    let isEdit: boolean = false;
+    if (user) {
+      isEdit = true;
     }
     const dialogRef = this.dialog.open(CreateEditUserDialogComponent, {
-      data: { user: user , isEdit},
+      data: { user: user, isEdit },
     });
 
     dialogRef.afterClosed().subscribe((result: CreateUser | User) => {
-      console.log('МОДАЛКА ЗАКРЫЛАСЬ, ЗНАЧЕНИЕ ФОРМЫ:', result);
       if (result) {
-         isEdit ? this.editUser(result) : this.createUser(result); // если isEdit true я его редак если false то создаю 
+        isEdit ? this.editUser(result) : this.createUser(result);
       }
     });
   }
