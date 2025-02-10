@@ -57,7 +57,7 @@ export class UserList {
   ngOnInit(): void {
     this.usersApiService.getUsers().subscribe((response: User[]) => {
       this.store.dispatch(UsersActions.set({ users: response }));
-      localStorage.setItem('users', JSON.stringify(response)); // сохраняем в local storage
+      localStorage.setItem('users', JSON.stringify(response));
     });
   }
 
