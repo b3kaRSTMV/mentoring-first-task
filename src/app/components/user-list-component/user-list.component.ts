@@ -9,10 +9,14 @@ import {
 } from '@angular/core';
 import { UserCard } from '../user-card-component/user-card.component';
 import { AsyncPipe, NgFor } from '@angular/common';
-import { UsersService } from '../../services/users.service';
+// import { UsersService } from '../../services/users.service';
 import { UsersApiService } from '../../services/usersApi.service';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { CreateEditUserDialogComponent} from '../edit-user-dialog/create-edit-user-component';
+import { Store } from '@ngrx/store';
+import { UsersActions } from './Store/user.actions';
+import { selectUsers } from './Store/users.selector';
+import { Action } from 'rxjs/internal/scheduler/Action';
 
 export interface User {
   id: number;
@@ -58,8 +62,10 @@ export interface CreateUser {
 })
 export class UserList {
   public readonly usersApiService = inject(UsersApiService);
-  public readonly usersService = inject(UsersService); // даем доступ в этот компонент данные из UsersService
-  users: User[] = [];  // Список пользователей
+  // public readonly usersService = inject(UsersService); // даем доступ в этот компонент данные из UsersService
+  private readonly store = inject(Store);
+  public readonly users$ = this.store.select(selectUsers);
+  // users: User[] = [];  // Список пользователей
   // constructor() {
   //   this.usersApiService.getUsers().subscribe((response: any) => {
   //     this.usersService.loadUsers(response);
@@ -72,37 +78,56 @@ export class UserList {
   
   ngOnInit(): void {
     // Инициализируем пользователей при загрузке компонента
-    this.usersService.initializeUsers();
-    this.usersService.users$.subscribe((users) => {
-      this.users = users;  // Обновляем список пользователей
-    });
+    // this.usersService.initializeUsers();
+    // this.usersService.users$.subscribe((users) => {
+    //   this.users = users;  // Обновляем список пользователей
+    // });
+    this.usersApiService.getUsers().subscribe((response: User[]) => {
+      this.store.dispatch(UsersActions.set({users: response}));
+      localStorage.setItem('users', JSON.stringify(response)); // сохраняем в local storage
+    })  
   }
 
   
 
   onDeleteUsers(id: number) {
-    this.usersService.deleteUser(id);
+    // this.usersService.deleteUser(id);
+    this.store.dispatch(UsersActions.delete({id}));
   }
 
   editUser(user: CreateUser) {
-    this.usersService.editUser({
-      ...user,
-      company: {
-        name: user.company.name,
-      },
-    });
+    // this.usersService.editUser({
+    //   ...user,
+    //   company: {
+    //     name: user.company.name,
+    //   },
+    // });
+    this.store.dispatch(UsersActions.edit({user}));
   }
 
   createUser(formData: CreateUser) {
-    this.usersService.addUser({
-      id: new Date().getTime(),
-      name: formData.name,
-      email: formData.email,
-      website: formData.website,
-      company: {
-        name: formData.company.name,
+    // this.usersService.addUser({
+    //   id: new Date().getTime(),
+    //   name: formData.name,
+    //   email: formData.email,
+    //   website: formData.website,
+    //   company: {
+    //     name: formData.company.name,
+    //   },
+    // });
+    this.store.dispatch(
+      UsersActions.create({
+        user: {
+          id: new Date().getTime(),
+          name: formData.name,
+          email: formData.email,
+          website: formData.website,
+          company: {
+          name: formData.company.name,
       },
-    });
+        }
+      })
+    )
   }
 
  

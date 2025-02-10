@@ -12,9 +12,6 @@ export class UsersApiService {
     return this.api.get<User[]>('https://jsonplaceholder.typicode.com/users'); // метод который делает запрос на бекенд //.this - обращение к полю класса //get - получить
   }
 
-  constructor() {
-    console.log('сервис создан!');
-  } // конструктор - это функция которая вызывается сразу когда создается класс
 }
 
 
