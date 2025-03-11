@@ -52,13 +52,14 @@ export interface CreateUser {
 export class UserList {
   public readonly usersApiService = inject(UsersApiService);
   private readonly store = inject(Store);
-  public readonly users$ = this.store.select(selectUsers);
+  readonly users$ = this.store.select(selectUsers);
+    
+
 
   ngOnInit(): void {
-    this.usersApiService.getUsers().subscribe((response: User[]) => {
-      this.store.dispatch(UsersActions.set({ users: response }));
-      localStorage.setItem('users', JSON.stringify(response));
-    });
+    console.log('Диспатчу экшен для загрузки пользователей');
+    this.store.dispatch(UsersActions.loadUsers( )); // Запускаем загрузку
+    
   }
 
   onDeleteUsers(id: number) {

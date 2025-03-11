@@ -8,9 +8,9 @@ const initialState: { users: User[] } = {
 
 export const UserReducer = createReducer(
   initialState,
-  on(UsersActions.set, (state, payload) => ({
+  on(UsersActions.loadUsersSuccess, (state, { users }) => ({
     ...state,
-    users: payload.users,
+    users: users,
   })),
 
   on(UsersActions.edit, (state, payload) => ({
@@ -28,6 +28,7 @@ export const UserReducer = createReducer(
     ...state,
     users: [...state.users, payload.user],
   })),
+
   on(UsersActions.delete, (state, payload) => ({
     ...state,
     users: state.users.filter((user) => user.id !== payload.id),

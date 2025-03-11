@@ -9,6 +9,7 @@ interface AppState {
 }
 
 export const selectUsersFeature = (state: AppState) => state.users;
+
 export const selectUsers = createSelector(
   selectUsersFeature,
   (state: UserState) => state.users
